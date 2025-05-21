@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  // here to change the model name in DB to be accounts
+  @@map("accounts")
+}
+
+model User {
+  id              String    @id @default(cuid())
+  // here optional , because he can register with google account 
+  name            String?
+  email           String?   @unique
+  password        String?
+  confirmPassword String?   @map("confirm_password")
+  // i can't write the column name like that (email_verified) so i write it in camelCase then in @map("email_verified") turn the name to email_verified in DB
+  emailVerified   DateTime? @map("email_verified")
+  image           String?
+  accounts        Account[]
+
+  @@map("users")
+}
+
+// model User {
+//   id        String    @id @default(uuid())
+//   name      String
+//   email     String    @unique
+//   password  String
+//   image     String?
+//   bio       String?
+//   role      Role      @default(USER)
+//   createdAt DateTime  @default(now())
+//   updatedAt DateTime  @updatedAt
+//   posts     Post[]
+//   comments  Comment[]
+// }
+
+// model Post {
+//   id            String     @id @default(uuid())
+//   title         String
+//   content       String
+//   published     Boolean    @default(false)
+//   createdAt     DateTime   @default(now())
+//   updatedAt     DateTime   @updatedAt
+//   author        User       @relation(fields: [authorId], references: [id])
+//   authorId      String
+//   comments      Comment[]
+//   categories    Category[]
+//   slug          String     @unique
+//   excerpt       String?
+//   featuredImage String?
+// }
+
+// model Comment {
+//   id        String   @id @default(uuid())
+//   content   String
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   author    User     @relation(fields: [authorId], references: [id])
+//   authorId  String
+//   post      Post     @relation(fields: [postId], references: [id])
+//   postId    String
+// }
+
+// model Category {
+//   id          String   @id @default(uuid())
+//   name        String   @unique
+//   slug        String   @unique
+//   description String?
+//   posts       Post[]
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
+// }
+
+// enum Role {
+//   USER
+//   ADMIN
+// }
