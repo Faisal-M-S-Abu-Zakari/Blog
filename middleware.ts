@@ -1,13 +1,20 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/auth";
 
-export { auth as middleware } from "@/auth";
+const authRoutes = ["/login", "/signup"];
 
-// This is a middleware function that is called for all requests in the config matcher
-export default function middleware(req: NextRequest) {
-  console.log("middleware called for :", req.nextUrl.pathname);
+export async function middleware(req: NextRequest) {
+  const { nextUrl } = req;
+  const path = nextUrl.pathname;
+
+  const session = await auth();
+  const isUserLoggedIn = Boolean(session);
+
+  if (authRoutes.includes(path) && isUserLoggedIn) {
+    return NextResponse.redirect(new URL("/home", nextUrl));
+  }
 }
 
-// This is a configuration object that specifies the routes that the middleware should be applied to
 export const config = {
-  matcher: ["/login", "/signup"],
+  matcher: ["/login", "/signup", "/home"],
 };
