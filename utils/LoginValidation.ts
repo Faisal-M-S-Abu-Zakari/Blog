@@ -1,9 +1,10 @@
+// utils/LoginValidation.ts
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  email: z.string().email({ message: "Invalid email" }),
-  password: z.string().min(8, { message: "the password must be longer" }),
-  remember: z.boolean(),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  remember: z.boolean().optional(),
 });
 
 export type loginType = z.infer<typeof loginSchema>;

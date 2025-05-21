@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Button,
   TextInput,
@@ -9,14 +10,16 @@ import {
   Group,
 } from "@mantine/core";
 import { Mail } from "lucide-react";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { loginSchema, loginType } from "@/utils/LoginValidation";
 import { useForm } from "react-hook-form";
 import { isLogin } from "@/actions/isLogin";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation"; // For client-side redirect
 
 const LoginForm = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -30,11 +33,37 @@ const LoginForm = () => {
       remember: false,
     },
   });
+
   const onSubmit = async (data: loginType) => {
     const result = await isLogin(data);
-    console.log(result);
+
+    if (!result.success) {
+      const errorMessage =
+        typeof result.message === "string"
+          ? result.message
+          : Object.values(result.message).flat().join(", ");
+      await Swal.fire({
+        icon: "error",
+        title: "Oops, Login Failed",
+        text: errorMessage || "Please check your inputs and try again",
+        color: "red",
+      });
+      return;
+    }
+
+    // Show success notification and wait for user to press "OK"
+    await Swal.fire({
+      icon: "success",
+      title: "Login Successful",
+      text: result.message,
+      color: "green",
+    });
+
+    // Reset form and redirect after user presses "OK"
     reset();
+    router.push("/home");
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <TextInput
@@ -42,7 +71,6 @@ const LoginForm = () => {
         placeholder="name@example.com"
         leftSection={<Mail size={16} />}
         {...register("email")}
-        // required
         error={errors.email?.message}
       />
 
@@ -57,7 +85,6 @@ const LoginForm = () => {
         }
         placeholder="••••••••"
         {...register("password")}
-        // required
         error={errors.password?.message}
       />
 
@@ -68,8 +95,9 @@ const LoginForm = () => {
         fullWidth
         size="lg"
         className="gradient-button text-white"
+        loading={isSubmitting}
       >
-        {isSubmitting ? "Signning In..." : "Sign In"}
+        {isSubmitting ? "Signing In..." : "Sign In"}
       </Button>
     </form>
   );

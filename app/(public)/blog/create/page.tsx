@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button, Title, Text, Box } from "@mantine/core";
 import { ArrowLeft } from "lucide-react";
-import CreateBlog from "../../../components/CreateForm";
+import CreateBlog from "@/components/CreateForm";
 
 export default function CreatePostPage() {
   return (

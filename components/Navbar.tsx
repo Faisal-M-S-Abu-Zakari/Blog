@@ -15,16 +15,19 @@ import {
   Stack,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { Session } from "next-auth";
 
-export default function Navbar() {
-  const user = false; // Set to null to show login/signup buttons
+interface NavbarProps {
+  session: Session | null;
+}
+
+export default function Navbar({ session }: NavbarProps) {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
 
   const mainLinks = [
     { link: "/", label: "Home" },
     { link: "/blog", label: "Blog" },
-
     { link: "/about", label: "About" },
   ];
 
@@ -72,9 +75,9 @@ export default function Navbar() {
             </Group>
 
             <Group gap="sm" visibleFrom="md">
-              {user ? (
+              {session?.user ? (
                 <>
-                  <Link href={"/blog/create"}>
+                  <Link href="/blog/create">
                     <Button
                       variant="outline"
                       size="sm"
@@ -83,30 +86,63 @@ export default function Navbar() {
                       Write
                     </Button>
                   </Link>
-                  <Menu position="bottom-end" withinPortal>
+                  <Menu
+                    position="bottom-end"
+                    withinPortal
+                    styles={{ dropdown: { zIndex: 1000, minWidth: "200px" } }}
+                  >
                     <Menu.Target>
                       <UnstyledButton>
-                        <Avatar size="sm" radius="xl" />
+                        <Avatar
+                          size="md" // Increased from "sm" to "lg" for a larger avatar
+                          radius="md"
+                          src={session.user.image || undefined}
+                        />
                       </UnstyledButton>
                     </Menu.Target>
                     <Menu.Dropdown>
-                      <Menu.Label>My Account</Menu.Label>
+                      <Menu.Label
+                        style={{ fontSize: "1.2rem", padding: "12px" }}
+                      >
+                        {session.user.name}
+                      </Menu.Label>
                       <Menu.Divider />
                       <Link href="/dashboard">
-                        <Menu.Item>Dashboard</Menu.Item>
+                        <Menu.Item
+                          style={{ fontSize: "1.1rem", padding: "10px 15px" }}
+                        >
+                          Dashboard
+                        </Menu.Item>
                       </Link>
                       <Link href="/blog/create">
-                        <Menu.Item>Create Post</Menu.Item>
+                        <Menu.Item
+                          style={{ fontSize: "1.1rem", padding: "10px 15px" }}
+                        >
+                          Create Post
+                        </Menu.Item>
                       </Link>
                       <Link href="/profile">
-                        <Menu.Item>Profile</Menu.Item>
+                        <Menu.Item
+                          style={{ fontSize: "1.1rem", padding: "10px 15px" }}
+                        >
+                          Profile
+                        </Menu.Item>
                       </Link>
                       <Link href="/settings">
-                        <Menu.Item>Settings</Menu.Item>
+                        <Menu.Item
+                          style={{ fontSize: "1.1rem", padding: "10px 15px" }}
+                        >
+                          Settings
+                        </Menu.Item>
                       </Link>
-
                       <Menu.Divider />
-                      <Menu.Item>Log out</Menu.Item>
+                      <Menu.Item
+                        component="a"
+                        href="/api/auth/signout"
+                        style={{ fontSize: "1.1rem", padding: "10px 15px" }}
+                      >
+                        Log out
+                      </Menu.Item>
                     </Menu.Dropdown>
                   </Menu>
                 </>
@@ -156,7 +192,7 @@ export default function Navbar() {
           ))}
 
           <Stack gap="xs" mt="md">
-            {user ? (
+            {session?.user ? (
               <>
                 <Link href="/blog/create">
                   <Button
@@ -168,11 +204,17 @@ export default function Navbar() {
                   </Button>
                 </Link>
                 <Link href="/profile">
-                  <Button variant="outline" fullWidth>
+                  <Button variant="outline" fullWidth onClick={closeDrawer}>
                     Profile
                   </Button>
                 </Link>
-                <Button variant="outline" fullWidth>
+                <Button
+                  variant="outline"
+                  fullWidth
+                  component="a"
+                  href="/api/auth/signout"
+                  onClick={closeDrawer}
+                >
                   Log out
                 </Button>
               </>
