@@ -17,18 +17,15 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 
 export default function Navbar() {
-  const user = null; // Set to null to show login/signup buttons
+  const user = false; // Set to null to show login/signup buttons
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
-
-  // const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   const mainLinks = [
     { link: "/", label: "Home" },
     { link: "/blog", label: "Blog" },
-    // { link: "/categories", label: "Categories" },
+
     { link: "/about", label: "About" },
-    // { link: "/contact", label: "Contact" },
   ];
 
   return (
@@ -75,31 +72,17 @@ export default function Navbar() {
             </Group>
 
             <Group gap="sm" visibleFrom="md">
-              {/* <ActionIcon
-                variant="subtle"
-                size="lg"
-                onClick={() => toggleColorScheme()}
-                color="purple"
-              >
-                {colorScheme === "dark" ? (
-                  <IconSun size={20} />
-                ) : (
-                  <IconMoon size={20} />
-                )}
-              </ActionIcon> */}
-
               {user ? (
                 <>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    leftSection={<Pencil size={16} />}
-                    component={Link}
-                    href="/blog/create"
-                  >
-                    Write
-                  </Button>
-
+                  <Link href={"/blog/create"}>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      leftSection={<Pencil size={16} />}
+                    >
+                      Write
+                    </Button>
+                  </Link>
                   <Menu position="bottom-end" withinPortal>
                     <Menu.Target>
                       <UnstyledButton>
@@ -109,18 +92,19 @@ export default function Navbar() {
                     <Menu.Dropdown>
                       <Menu.Label>My Account</Menu.Label>
                       <Menu.Divider />
-                      <Menu.Item component={Link} href="/dashboard">
-                        Dashboard
-                      </Menu.Item>
-                      <Menu.Item component={Link} href="/blog/create">
-                        Create Post
-                      </Menu.Item>
-                      <Menu.Item component={Link} href="/profile">
-                        Profile
-                      </Menu.Item>
-                      <Menu.Item component={Link} href="/settings">
-                        Settings
-                      </Menu.Item>
+                      <Link href="/dashboard">
+                        <Menu.Item>Dashboard</Menu.Item>
+                      </Link>
+                      <Link href="/blog/create">
+                        <Menu.Item>Create Post</Menu.Item>
+                      </Link>
+                      <Link href="/profile">
+                        <Menu.Item>Profile</Menu.Item>
+                      </Link>
+                      <Link href="/settings">
+                        <Menu.Item>Settings</Menu.Item>
+                      </Link>
+
                       <Menu.Divider />
                       <Menu.Item>Log out</Menu.Item>
                     </Menu.Dropdown>
@@ -128,37 +112,20 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
-                  <Button
-                    variant="subtle"
-                    color="purple"
-                    component={Link}
-                    href="/login"
-                  >
-                    Sign in
-                  </Button>
-                  <Button color="purple" component={Link} href="/signup">
-                    Sign up
-                  </Button>
+                  <Link href="/login">
+                    <Button variant="subtle" color="purple">
+                      Sign in
+                    </Button>
+                  </Link>
+                  <Link href="/signup">
+                    <Button color="purple">Sign up</Button>
+                  </Link>
                 </>
               )}
             </Group>
 
             {/* Mobile Navigation */}
             <Group gap="sm" hiddenFrom="md">
-              {/* 
-              <ActionIcon
-                variant="subtle"
-                size="lg"
-                onClick={() => toggleColorScheme()}
-                color="purple"
-              >
-                {colorScheme === "dark" ? (
-                  <IconSun size={20} />
-                ) : (
-                  <IconMoon size={20} />
-                )}
-              </ActionIcon> */}
-
               <Burger opened={drawerOpened} onClick={toggleDrawer} />
             </Group>
           </Group>
@@ -191,48 +158,41 @@ export default function Navbar() {
           <Stack gap="xs" mt="md">
             {user ? (
               <>
-                <Button
-                  fullWidth
-                  leftSection={<Pencil size={16} />}
-                  component={Link}
-                  href="/blog/create"
-                  onClick={closeDrawer}
-                >
-                  Write a Post
-                </Button>
-                <Button
-                  variant="outline"
-                  fullWidth
-                  component={Link}
-                  href="/profile"
-                >
-                  Profile
-                </Button>
+                <Link href="/blog/create">
+                  <Button
+                    fullWidth
+                    leftSection={<Pencil size={16} />}
+                    onClick={closeDrawer}
+                  >
+                    Write a Post
+                  </Button>
+                </Link>
+                <Link href="/profile">
+                  <Button variant="outline" fullWidth>
+                    Profile
+                  </Button>
+                </Link>
                 <Button variant="outline" fullWidth>
                   Log out
                 </Button>
               </>
             ) : (
               <>
-                <Button
-                  fullWidth
-                  color="purple"
-                  component={Link}
-                  href="/signup"
-                  onClick={closeDrawer}
-                >
-                  Sign up
-                </Button>
-                <Button
-                  variant="subtle"
-                  color="purple"
-                  fullWidth
-                  component={Link}
-                  href="/login"
-                  onClick={closeDrawer}
-                >
-                  Sign in
-                </Button>
+                <Link href="/signup">
+                  <Button fullWidth color="purple" onClick={closeDrawer}>
+                    Sign up
+                  </Button>
+                </Link>
+                <Link href="/login">
+                  <Button
+                    variant="subtle"
+                    color="purple"
+                    fullWidth
+                    onClick={closeDrawer}
+                  >
+                    Sign in
+                  </Button>
+                </Link>
               </>
             )}
           </Stack>

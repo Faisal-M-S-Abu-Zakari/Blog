@@ -27,23 +27,23 @@ const Cta = () => {
           Share your knowledge and insights with our community of developers and
           designers.
         </Text>
-        <Button
-          component={Link}
-          href="/blog/create"
-          size="lg"
-          variant="filled"
-          color="white"
-          c="var(--mantine-color-purple-6)"
-          styles={{
-            root: {
-              "&:hover": {
-                backgroundColor: "rgba(255, 255, 255, 0.9)",
+        <Link href={"blog/create"}>
+          <Button
+            size="lg"
+            variant="filled"
+            color="white"
+            c="var(--mantine-color-purple-6)"
+            styles={{
+              root: {
+                "&:hover": {
+                  backgroundColor: "rgba(255, 255, 255, 0.9)",
+                },
               },
-            },
-          }}
-        >
-          Start Writing Today
-        </Button>
+            }}
+          >
+            Start Writing Today
+          </Button>
+        </Link>
       </Container>
     </section>
   );

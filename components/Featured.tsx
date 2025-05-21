@@ -12,6 +12,7 @@ import {
   Badge,
 } from "@mantine/core";
 import featuredPost from "@/constant/featuredPost";
+import Link from "next/link";
 
 const Featured = () => {
   return (
@@ -91,16 +92,15 @@ const Featured = () => {
                   </Group>
                 </Stack>
               </Group>
-
-              <Button
-                component="a"
-                href={`/blog/${featuredPost.id}`}
-                variant="gradient"
-                gradient={{ from: "blue", to: "cyan" }}
-                fullWidth
-              >
-                Read Article
-              </Button>
+              <Link href={`/blog/${featuredPost.id}`}>
+                <Button
+                  variant="gradient"
+                  gradient={{ from: "blue", to: "cyan" }}
+                  fullWidth
+                >
+                  Read Article
+                </Button>
+              </Link>
             </Stack>
           </Group>
         </Card>

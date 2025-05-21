@@ -184,16 +184,11 @@ export default function BlogPage() {
                         </Group>
                       </Box>
                     </Group>
-
-                    <Button
-                      component={Link}
-                      href={`/blog/${post.id}`}
-                      variant="outline"
-                      fullWidth
-                      mt="md"
-                    >
-                      Read Article
-                    </Button>
+                    <Link href={`/blog/${post.id}`}>
+                      <Button variant="outline" fullWidth mt="md">
+                        Read Article
+                      </Button>
+                    </Link>
                   </Stack>
                 </Card>
               </Grid.Col>

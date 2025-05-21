@@ -30,15 +30,15 @@ export default async function BlogPost({ params }: { params: { id: string } }) {
       <Container size="lg" py="xl">
         <Box maw={800} mx="auto">
           <Title order={1}>Post not found</Title>
-          <Button
-            variant="subtle"
-            component={Link}
-            href="/blog"
-            leftSection={<ArrowLeft size={16} />}
-            mt="md"
-          >
-            Back to all posts
-          </Button>
+          <Link href="/blog">
+            <Button
+              variant="subtle"
+              leftSection={<ArrowLeft size={16} />}
+              mt="md"
+            >
+              Back to all posts
+            </Button>
+          </Link>
         </Box>
       </Container>
     );
@@ -48,15 +48,15 @@ export default async function BlogPost({ params }: { params: { id: string } }) {
     <Container size="lg" py="xl">
       <Box maw={800} mx="auto">
         {/* Back button */}
-        <Button
-          variant="subtle"
-          component={Link}
-          href="/blog"
-          leftSection={<ArrowLeft size={16} />}
-          mb="xl"
-        >
-          Back to all posts
-        </Button>
+        <Link href="/blog">
+          <Button
+            variant="subtle"
+            leftSection={<ArrowLeft size={16} />}
+            mb="xl"
+          >
+            Back to all posts
+          </Button>
+        </Link>
 
         {/* Post header */}
         <Box mb="xl">
@@ -129,16 +129,11 @@ export default async function BlogPost({ params }: { params: { id: string } }) {
           </Title>
           <Group gap="xs">
             {post.tags.map((tag) => (
-              <Button
-                key={tag}
-                component={Link}
-                href={`/tags/${tag.toLowerCase().replace(/\s+/g, "-")}`}
-                variant="light"
-                size="sm"
-                radius="xl"
-              >
-                {tag}
-              </Button>
+              <Link href={`/tags/${tag.toLowerCase().replace(/\s+/g, "-")}`}>
+                <Button key={tag} variant="light" size="sm" radius="xl">
+                  {tag}
+                </Button>
+              </Link>
             ))}
           </Group>
         </Box>
@@ -178,15 +173,13 @@ export default async function BlogPost({ params }: { params: { id: string } }) {
               <Text c="dimmed" mb="md">
                 {post.author.bio}
               </Text>
-              <Button
-                variant="light"
-                component={Link}
+              <Link
                 href={`/author/${post.author.name
                   .toLowerCase()
                   .replace(/\s+/g, "-")}`}
               >
-                View all posts
-              </Button>
+                <Button variant="light">View all posts</Button>
+              </Link>
             </Box>
           </Group>
         </Paper>
@@ -219,13 +212,9 @@ export default async function BlogPost({ params }: { params: { id: string } }) {
                     <Text c="dimmed" mb="md" lineClamp={2}>
                       {relatedPost.excerpt}
                     </Text>
-                    <Button
-                      variant="light"
-                      component={Link}
-                      href={`/blog/${relatedPost.id}`}
-                    >
-                      Read more
-                    </Button>
+                    <Link href={`/blog/${relatedPost.id}`}>
+                      <Button variant="light">Read more</Button>
+                    </Link>
                   </Box>
                 </Paper>
               ))}

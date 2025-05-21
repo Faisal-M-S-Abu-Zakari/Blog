@@ -255,10 +255,15 @@ interface Props {
 }
 export default function Mantine_Provider({ children }: Props) {
   return (
-    <DirectionProvider detectDirection>
+    <DirectionProvider>
       <MantineProvider theme={theme}>
-        <Notifications />
-        <> {children}</>
+        <Notifications
+          position="top-left"
+          containerWidth={400}
+          autoClose={4000}
+          zIndex={1000}
+        />
+        {children}
       </MantineProvider>
     </DirectionProvider>
   );

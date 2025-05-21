@@ -89,17 +89,16 @@ const Recent = () => {
                   </Group>
                 </div>
               </Group>
-
-              <Button
-                variant="outline"
-                fullWidth
-                component={Link}
-                href={`/blog/${post.id}`}
-                leftSection={<Link2 size={16} />}
-                mt="md"
-              >
-                Read Article
-              </Button>
+              <Link href={`/blog/${post.id}`}>
+                <Button
+                  variant="outline"
+                  fullWidth
+                  leftSection={<Link2 size={16} />}
+                  mt="md"
+                >
+                  Read Article
+                </Button>
+              </Link>
             </Card>
           ))}
         </div>
